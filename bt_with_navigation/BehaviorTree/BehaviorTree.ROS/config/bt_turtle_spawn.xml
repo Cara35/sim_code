@@ -1,0 +1,12 @@
+<root main_tree_to_execute="MainTree">
+    <BehaviorTree ID="MainTree">
+        <Sequence>
+            <Action ID = "Fallturtle" service_name = "spawn" 
+                                        position_x = "2" 
+                                        position_y = "4" 
+                                        position_theta = "0" 
+                                        turtle_name = "turtle2" 
+                                        result_name = "NULL"/>
+        </Sequence>
+    </BehaviorTree>
+</root>

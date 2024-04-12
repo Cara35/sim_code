@@ -1,0 +1,47 @@
+# 用于全局规划的插件名称
+base_global_planner: "navfn/NavfnROS"
+
+# 用于局部规划的插件名称
+base_local_planner: "base_local_planner/TrajectoryPlannerROS"
+
+# 规划循环的频率（赫兹）
+planner_frequency: 0
+
+# 控制循环的频率（赫兹），并向底盘发送速度指令
+controller_frequency: 20
+
+# 在进行空间清理操作之前，规划器将等待的秒数，以尝试找到有效路径
+planner_patience: 5.0
+
+# 在未收到有效控制命令的情况下，控制器将等待的秒数，然后执行空间清理操作
+controller_patience: 5.0
+
+# 在执行空间清理操作之前，将尝试多少次调用规划器以找到有效路径
+max_planning_retries: -1
+
+# 当尝试清理地图中的空间时，距离机器人多少米的障碍物将从代价地图中清除
+conservative_reset_dist: 3
+
+# 是否启用move_base的恢复行为以尝试清理空间
+recovery_behavior_enabled: true
+
+# 决定机器人在尝试清理空间时是否进行原地旋转
+clearing_rotation_allowed: true
+
+# 当move_base处于非活动状态时，是否关闭节点的代价地图
+shutdown_costmaps: false
+
+# 在执行恢复行为之前，允许的振荡时间（秒）
+oscillation_timeout: 0.0
+
+# 机器人必须移动多少米才被视为非振荡状态
+oscillation_distance: 0.5
+
+# 在make_plan服务调用时是否清除全局代价地图
+make_plan_clear_costmap: true
+
+# 在make_plan服务调用时，如果目标无法到达，是否将原始目标添加到路径中
+make_plan_add_unreachable_goal: true
+
+# 恢复为原始配置
+restore_defaults: false

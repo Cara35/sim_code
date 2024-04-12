@@ -1,0 +1,16 @@
+<launch>
+
+    <!-- 开启升降台服务节点 -->
+	<node pkg="relay_ctrl" type="liftmotor_service_node.py" name="liftmotor_service_node" output="screen" />
+    <!-- 开启D435相机驱动程序 -->
+    <include file="$(find realsense2_camera)/launch/rs_camera.launch" />
+    <!-- 开启D435拍照服务 -->
+    <node pkg="take_photo" type="camera_node" name="camera_node" output="screen" />
+    <!-- 开启lite6的服务 -->
+    <include file="$(find xarm_bringup)/launch/lite6_server.launch">
+    <arg name="robot_ip" value="192.168.1.163"/>
+    </include>
+    <!-- 开启自定义延时服务 -->
+    <node pkg="control_lite6" type="delay_server" name="delay_server" output="screen" />
+
+</launch>

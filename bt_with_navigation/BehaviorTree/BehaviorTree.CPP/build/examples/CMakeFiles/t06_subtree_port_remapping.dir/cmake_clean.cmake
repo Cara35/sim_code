@@ -1,0 +1,10 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/t06_subtree_port_remapping.dir/t06_subtree_port_remapping.cpp.o"
+  "t06_subtree_port_remapping"
+  "t06_subtree_port_remapping.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/t06_subtree_port_remapping.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

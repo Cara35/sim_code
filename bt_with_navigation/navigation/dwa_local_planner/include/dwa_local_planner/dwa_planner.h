@@ -1,0 +1,163 @@
+/*********************************************************************
+dwa_local_planner::DWAPlanner提供了先前描述的DWA和Trajectory Rollout算法的实现。
+为了在ROS中使用dwa_local_planner::DWAPlanner，请使用DWAPlannerROS包装器。
+不建议单独使用dwa_local_planner::DWAPlanner。
+*********************************************************************/
+#ifndef DWA_LOCAL_PLANNER_DWA_PLANNER_H_
+#define DWA_LOCAL_PLANNER_DWA_PLANNER_H_
+
+#include <vector>
+#include <Eigen/Core>
+
+
+#include <dwa_local_planner/DWAPlannerConfig.h>
+
+//for creating a local cost grid
+#include <base_local_planner/map_grid_visualizer.h>
+
+//for obstacle data access
+#include <costmap_2d/costmap_2d.h>
+
+#include <base_local_planner/trajectory.h>
+#include <base_local_planner/local_planner_limits.h>
+#include <base_local_planner/local_planner_util.h>
+#include <base_local_planner/simple_trajectory_generator.h>
+
+#include <base_local_planner/oscillation_cost_function.h>
+#include <base_local_planner/map_grid_cost_function.h>
+#include <base_local_planner/obstacle_cost_function.h>
+#include <base_local_planner/twirling_cost_function.h>
+#include <base_local_planner/simple_scored_sampling_planner.h>
+
+#include <nav_msgs/Path.h>
+
+namespace dwa_local_planner {
+  /**
+   * @class DWAPlanner
+   * @brief 使用动态窗口方法实现本地规划器的类
+   */
+  class DWAPlanner {
+    public:
+      /**
+       * @brief  DWA规划器构造函数
+       * @param name The name of the planner 
+       * @param costmap_ros A pointer to the costmap instance the planner should use
+       * @param global_frame the frame id of the tf frame to use
+       */
+      DWAPlanner(std::string name, base_local_planner::LocalPlannerUtil *planner_util);
+
+      /**
+       * @brief 重新配置轨迹规划器
+       */
+      void reconfigure(DWAPlannerConfig &cfg);
+
+      /**
+       * @brief  检查轨迹对于位置/速度对是否合法
+       * @param pos 机器人的位置
+       * @param vel 机器人的速度
+       * @param vel_samples 机器人所需的速度
+       * @return 如果轨迹有效则为真，否则为假
+       */
+      bool checkTrajectory(
+          const Eigen::Vector3f pos,
+          const Eigen::Vector3f vel,
+          const Eigen::Vector3f vel_samples);
+
+      /**
+       * @brief 给定机器人当前的位置和速度，并找到最佳的执行轨迹
+       * @param global_pose 机器人当前位置
+       * @param global_vel 机器人当前速度
+       * @param drive_velocities The velocities to send to the robot base  发送到机器人底盘的速度
+       * @return 得分最高的轨迹。 cost >= 0 意味这轨迹是可以被选取执行的。
+       */
+      base_local_planner::Trajectory findBestPath(
+          const geometry_msgs::PoseStamped& global_pose,
+          const geometry_msgs::PoseStamped& global_vel,
+          geometry_msgs::PoseStamped& drive_velocities);
+
+      /**
+       * @brief  在进行planning之前更新对应的打分项
+       * @param  global_pose 机器人的当前姿势
+       * @param  new_plan 新的 global plan
+       * @param  footprint_spec 机器人的足迹
+       *
+       * The obstacle cost function gets the footprint.
+       * The path and goal cost functions get the global_plan
+       * The alignment cost functions get a version of the global plan
+       *   that is modified based on the global_pose 
+       */
+      void updatePlanAndLocalCosts(const geometry_msgs::PoseStamped& global_pose,
+          const std::vector<geometry_msgs::PoseStamped>& new_plan,
+          const std::vector<geometry_msgs::Point>& footprint_spec);
+
+      /**
+       * @brief 获取本地规划器预计运行的时间段。
+       * @return 模拟期
+       */
+      double getSimPeriod() { return sim_period_; }
+
+      /**
+       * @brief 计算栅格地图网格单元的组件和总成本
+       * @param cx 栅格地图网格中单元格的x坐标
+       * @param cy 栅格地图网格中单元格的y坐标
+       * @param path_cost Will be set to the path distance component of the cost function 将被设置为路径距离的代价函数
+       * @param goal_cost Will be set to the goal distance component of the cost function 将被设置为目标距离的代价函数
+       * @param occ_cost Will be set to the costmap value of the cell 将被设置为单元格的costmap值
+       * @param total_cost 将设置为整体成本函数的值，同时考虑缩放参数
+       * @return 如果单元格是可以穿过的并且因此是机器人可以移动到的位置则为真
+       */
+      bool getCellCosts(int cx, int cy, float &path_cost, float &goal_cost, float &occ_cost, float &total_cost);
+
+      /**
+       * 设置新的plan并重置状态
+       */
+      bool setPlan(const std::vector<geometry_msgs::PoseStamped>& orig_global_plan);
+
+    private:
+
+      base_local_planner::LocalPlannerUtil *planner_util_;
+
+      double stop_time_buffer_; //在撞到物体之前多久，我们将强制机器人停止
+      double path_distance_bias_, goal_distance_bias_, occdist_scale_;
+      Eigen::Vector3f vsamples_;
+
+      double sim_period_;///< @brief The number of seconds to use to compute max/min vels for dwa
+      base_local_planner::Trajectory result_traj_;
+
+      double forward_point_distance_;
+
+      std::vector<geometry_msgs::PoseStamped> global_plan_;
+
+      boost::mutex configuration_mutex_;
+      std::string frame_id_;
+      ros::Publisher traj_cloud_pub_;
+      bool publish_cost_grid_pc_; ///< @brief Whether or not to build and publish a PointCloud
+      bool publish_traj_pc_;
+
+      double cheat_factor_;
+
+      base_local_planner::MapGridVisualizer map_viz_; ///< @brief The map grid visualizer for outputting the potential field generated by the cost function
+
+      // see constructor body for explanations
+      base_local_planner::SimpleTrajectoryGenerator generator_;
+      base_local_planner::SimpleScoredSamplingPlanner scored_sampling_planner_;
+
+      //打分对象
+      //旋转成本打分
+      base_local_planner::TwirlingCostFunction twirling_costs_;
+      //摆动打分
+      base_local_planner::OscillationCostFunction oscillation_costs_; 
+      //避障打分
+      base_local_planner::ObstacleCostFunction obstacle_costs_;
+      //路径跟随打分
+      base_local_planner::MapGridCostFunction path_costs_;
+      //指向目标打分
+      base_local_planner::MapGridCostFunction goal_costs_;
+      //前向点指向目标打分
+      base_local_planner::MapGridCostFunction goal_front_costs_;
+      //对齐打分
+      base_local_planner::MapGridCostFunction alignment_costs_;
+
+  };
+};
+#endif

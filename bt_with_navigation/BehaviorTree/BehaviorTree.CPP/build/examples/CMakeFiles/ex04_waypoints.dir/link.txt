@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/ex04_waypoints.dir/ex04_waypoints.cpp.o  -o ex04_waypoints  -Wl,-rpath,/home/agx-ppn/catkin_ws/src/BehaviorTree.CPP/build ../sample_nodes/lib/libbt_sample_nodes.a ../libbehaviortree_cpp_v3.so -lpthread -ldl 

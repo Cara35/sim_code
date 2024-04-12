@@ -1,0 +1,3 @@
+string node
+string previous_status
+string current_status

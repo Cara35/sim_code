@@ -1,0 +1,15 @@
+<root main_tree_to_execute="SubTreeB">
+    <BehaviorTree ID="SubTreeB">
+        <Sequence>
+
+            <Action ID = "MoveBaseGoal" server_name="move_base" 
+                        frame_id = "map"
+                        position_x = "3"
+                        position_y = "4"
+                        orientation_w = "1"/>
+            
+            <Action ID ="TakePhoto" service_name = "camera_command"
+                                  arm_result = "0" />
+        </Sequence>
+    </BehaviorTree>
+</root>

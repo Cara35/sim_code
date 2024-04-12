@@ -1,0 +1,134 @@
+<?xml version="1.0" ?>
+<root main_tree_to_execute="RootTree">
+	<BehaviorTree ID="RootTree">
+		<Sequence>
+			<SubTree ID="Point1Tree"/>
+			<SubTree ID="Point2Tree"/>
+			<SubTree ID="Point3Tree"/>
+			<SubTree ID="Point4Tree"/>
+			<SubTree ID="Point5Tree"/>
+		</Sequence>
+	</BehaviorTree>
+	<BehaviorTree ID="Point1Tree">
+		<Sequence>
+			<Action ID="SlamNode" file_name="mission-system" id_type="follow_line" op_type="start" service_name="/input/op" success="0"/>
+			<Action ID="MutipointNode1" pose="-2.29;4.24;78.16" topic_name="/muti_point_nav"/>
+			<Condition ID="GoalArrived"/>
+			<SubTree ID="Point1ActionTree"/>
+		</Sequence>
+	</BehaviorTree>
+	<BehaviorTree ID="Point1ActionTree">
+		<Sequence>
+			<Action ID="LiftMotorSrv" id="lifter_11" mode="0"  service_name="/LiftingMotorService" val="10"/>
+			<Action ID="ControlArm" id="arm_444" joint_angle="179.5,91.3,132.9,-175.7,39.3,-9"  service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+			<Action ID="TakePhoto" camera_number="camera_333" service_name="/take_photo_service"/>
+
+			<!-- 收缩 -->
+			<Action ID="ControlArm" id="arm_444" joint_angle="176.8,-99.6,47.4,-172,81.5,-0.9"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="LiftMotorSrv" id="lifter_11" mode="0"   service_name="/LiftingMotorService" val="6"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+		</Sequence>
+	</BehaviorTree>
+	<BehaviorTree ID="Point2Tree">
+		<Sequence>
+			<Action ID="MutipointNode1" pose="-3.3;-0.41;-10.74" topic_name="/muti_point_nav"/>
+			<Condition ID="GoalArrived"/>
+			<SubTree ID="Point2ActionTree"/>
+		</Sequence>
+	</BehaviorTree>
+	<BehaviorTree ID="Point2ActionTree">
+		<Sequence>
+			<Action ID="LiftMotorSrv" id="lifter_11" mode="0"   service_name="/LiftingMotorService" val="306"/>
+			<Action ID="ControlArm" id="arm_444" joint_angle="195.5,9.7,70.9,-154.5,26.7,-19.7"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+			<Action ID="TakePhoto" camera_number="camera_333" service_name="/take_photo_service" success="false"/>
+			<Action ID="LiftMotorSrv" id="lifter_11" mode="0"   service_name="/LiftingMotorService" val="28"/>
+			<Action ID="ControlArm" id="arm_444" joint_angle="176.9,31.7,45.6,-185.2,81.5,-0.9"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+			<Action ID="TakePhoto" camera_number="camera_333" service_name="/take_photo_service" success="false"/>
+			<!-- 收缩 -->
+			<Action ID="ControlArm" id="arm_444" joint_angle="176.8,-99.6,47.4,-172,81.5,-0.9"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="LiftMotorSrv" id="lifter_11" mode="0"   service_name="/LiftingMotorService" val="6"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+		</Sequence>
+	</BehaviorTree>
+	<BehaviorTree ID="Point3Tree">
+		<Sequence>
+			<Action ID="MutipointNode1" pose="-4.89;-2.15;170.06" topic_name="/muti_point_nav"/>
+			<Condition ID="GoalArrived"/>
+			<SubTree ID="Point3ActionTree"/>
+		</Sequence>
+	</BehaviorTree>
+	<BehaviorTree ID="Point3ActionTree">
+		<Sequence>
+			<Action ID="LiftMotorSrv" id="lifter_11" mode="0"   service_name="/LiftingMotorService" val="193"/>
+			<Action ID="ControlArm" id="arm_444" joint_angle="94.9,3.3,51.9,-170.3,44,-5.3"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+			<Action ID="TakePhoto" camera_number="camera_333" service_name="/take_photo_service" success="false"/>
+			<Action ID="ControlArm" id="arm_444" joint_angle="62.8,41,51.6,-207.4,76.9,3.2"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+			<Action ID="TakePhoto" camera_number="camera_333" service_name="/take_photo_service" success="false"/>
+			<Action ID="ControlArm" id="arm_444" joint_angle="56.3,21.5,73.6,-209,47.5,22.9"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+			<Action ID="TakePhoto" camera_number="camera_333" service_name="/take_photo_service" success="false"/>
+			<Action ID="ControlArm" id="arm_444" joint_angle="41.7,58.7,101,-233.1,56.7,26.5"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+			<Action ID="TakePhoto" camera_number="camera_333" service_name="/take_photo_service" success="false"/>
+			<!-- 收缩 -->
+			<Action ID="ControlArm" id="arm_444" joint_angle="176.8,-99.6,47.4,-172,81.5,-0.9"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="LiftMotorSrv" id="lifter_11" mode="0"   service_name="/LiftingMotorService" val="6"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+		</Sequence>
+	</BehaviorTree>
+	<BehaviorTree ID="Point4Tree">
+		<Sequence>
+			<Action ID="MutipointNode1" pose="-6.48;-2.39;171.73" topic_name="/muti_point_nav"/>
+			<Condition ID="GoalArrived"/>
+			<SubTree ID="Point4ActionTree"/>
+		</Sequence>
+	</BehaviorTree>
+	<BehaviorTree ID="Point4ActionTree">
+		<Sequence>
+			<Action ID="LiftMotorSrv" id="lifter_11" mode="0"   service_name="/LiftingMotorService" val="325"/>
+			<Action ID="ControlArm" id="arm_444" joint_angle="111.8,36.4,106.5,-155.6,17.6,-25.3"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+			<Action ID="TakePhoto" camera_number="camera_333" service_name="/take_photo_service" success="false"/>
+			<Action ID="ControlArm" id="arm_444" joint_angle="50.5,94.8,122.7,-220.8,67.7,21.5"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+			<Action ID="TakePhoto" camera_number="camera_333" service_name="/take_photo_service" success="false"/>
+			<Action ID="LiftMotorSrv" id="lifter_11" mode="0"   service_name="/LiftingMotorService" val="15"/>
+			<Action ID="ControlArm" id="arm_444" joint_angle="107.2,98.3,99.3,-157.6,88.4,1.8"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+			<Action ID="TakePhoto" camera_number="camera_333" service_name="/take_photo_service" success="false"/>
+
+			<!-- 收缩 -->
+			<Action ID="ControlArm" id="arm_444" joint_angle="176.8,-99.6,47.4,-172,81.5,-0.9"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="LiftMotorSrv" id="lifter_11" mode="0"   service_name="/LiftingMotorService" val="6"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+		</Sequence>
+	</BehaviorTree>
+	<BehaviorTree ID="Point5Tree">
+		<Sequence>
+			<Action ID="MutipointNode1" pose="-4.22;-1.5;-8.27" topic_name="/muti_point_nav"/>
+			<Condition ID="GoalArrived"/>
+			<SubTree ID="Point5ActionTree"/>
+		</Sequence>
+	</BehaviorTree>
+	<BehaviorTree ID="Point5ActionTree">
+		<Sequence>
+			<Action ID="LiftMotorSrv" id="lifter_11" mode="0"   service_name="/LiftingMotorService" val="188"/>
+			<Action ID="ControlArm" id="arm_444" joint_angle="96.4,-0.1,73.1,-168.2,13.5,-9.9"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+			<Action ID="TakePhoto" camera_number="camera_333" service_name="/take_photo_service" success="false"/>
+			<Action ID="ControlArm" id="arm_444" joint_angle="67.5,40.9,42.4,-199.7,88.4,2.5"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+			<Action ID="TakePhoto" camera_number="camera_333" service_name="/take_photo_service" success="false"/>
+
+			<!-- 收缩 -->
+			<Action ID="ControlArm" id="arm_444" joint_angle="176.8,-99.6,47.4,-172,81.5,-0.9"   service_name="/agx_arm_task_node/move_arm_srv"/>
+			<Action ID="LiftMotorSrv" id="lifter_11" mode="0"   service_name="/LiftingMotorService" val="6"/>
+			<Action ID="DelayServer" delay_time="5"   service_name="/delay_time_server"/>
+		</Sequence>
+	</BehaviorTree>
+</root>

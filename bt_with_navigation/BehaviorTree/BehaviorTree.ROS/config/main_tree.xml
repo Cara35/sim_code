@@ -1,0 +1,29 @@
+<root main_tree_to_execute="MainTree">
+    <include path="/home/agx-ppn/turtlebot3_ws/src/my_robot_planner/BehaviorTree/BehaviorTree.ROS/config/sub_tree_a.xml" />
+    <include path="/home/agx-ppn/turtlebot3_ws/src/my_robot_planner/BehaviorTree/BehaviorTree.ROS/config/sub_tree_b.xml" />
+    
+    <BehaviorTree ID="MainTree">
+        <Sequence>
+
+            <SubTree ID="SecondTree" />
+            <SubTree ID="SubTreeA" />
+            <SubTree ID="SubTreeB" />
+        </Sequence>
+    </BehaviorTree>
+
+    <BehaviorTree ID="SecondTree">
+        <Sequence>
+
+            <Action ID = "MoveBaseGoal" server_name="move_base" 
+                        frame_id = "map"
+                        position_x = "1.4"
+                        position_y = "4.6"
+                        orientation_w = "1"/>
+            
+            <Action ID ="TakePhoto" service_name = "camera_command"
+                                  arm_result = "0" />
+            <!-- <SubTree ID="SubTreeA" />
+            <SubTree ID="SubTreeB" /> -->
+        </Sequence>
+    </BehaviorTree>
+</root>
